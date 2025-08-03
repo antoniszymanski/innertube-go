@@ -35,7 +35,6 @@ jobs:
         with:
           mode: COMMIT
           configuration: .github/changelog-config.json
-          offlineMode: true
 
       - name: Update release
         uses: softprops/action-gh-release@v2
