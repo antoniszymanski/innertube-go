@@ -22,7 +22,7 @@ type Video struct {
 	ID            string      `json:"id"`
 	Title         string      `json:"title"`
 	LengthSeconds int64       `json:"lengthSeconds"`
-	ChannelID     string      `json:"authorId"`
+	AuthorID      string      `json:"authorId"`
 	Description   string      `json:"description"`
 	Thumbnails    []Thumbnail `json:"thumbnails"`
 	ViewCount     int64       `json:"viewCount"`
@@ -48,7 +48,7 @@ func (raw *rawVideo) toVideo() (*Video, error) {
 	if err != nil {
 		return nil, err
 	}
-	v.ChannelID = raw.VideoDetails.ChannelID
+	v.AuthorID = raw.VideoDetails.ChannelID
 	v.Description = raw.VideoDetails.ShortDescription
 	v.Thumbnails = raw.VideoDetails.Thumbnail.Thumbnails
 	v.ViewCount, err = atoi(raw.VideoDetails.ViewCount)
