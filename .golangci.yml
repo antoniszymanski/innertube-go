@@ -10,3 +10,6 @@ linters:
         - G104
         - G107
         - G304
+    staticcheck:
+      checks:
+        - -SA5008

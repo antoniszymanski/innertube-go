@@ -1,9 +1,12 @@
 {
   "go.addTags": {
     "tags": "json",
-    "options": "",
+    "options": "json=required",
     "promptForTags": false,
     "transform": "camelcase",
     "template": ""
+  },
+  "gopls": {
+    "ui.diagnostic.staticcheck": false
   }
 }

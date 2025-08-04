@@ -3,40 +3,51 @@
 
 package innertube
 
-import "time"
+import (
+	"time"
+
+	"github.com/mailru/easyjson"
+)
+
+//go:generate go tool easyjson video.go
 
 func (c *Client) GetVideo(id string) (*Video, error) {
-	var raw rawVideo
-	if err := c.call(&requestConfig{
+	data, err := c.call(&requestConfig{
 		Method: "POST",
 		Path:   "/player",
-		Input:  map[string]string{"videoId": id},
-		Output: &raw,
-	}); err != nil {
+		Data:   map[string]string{"videoId": id},
+	})
+	if err != nil {
 		return nil, err
 	}
+
+	var raw rawVideo
+	if err := easyjson.Unmarshal(data, &raw); err != nil {
+		return nil, err
+	}
+
 	return raw.toVideo()
 }
 
 type Video struct {
-	ID            string      `json:"id"`
-	Title         string      `json:"title"`
-	LengthSeconds int64       `json:"lengthSeconds"`
-	AuthorID      string      `json:"authorId"`
-	Description   string      `json:"description"`
-	Thumbnails    []Thumbnail `json:"thumbnails"`
-	ViewCount     int64       `json:"viewCount"`
-	Author        string      `json:"author"`
-	IsPrivate     bool        `json:"isPrivate"`
-	IsLiveContent bool        `json:"isLiveContent"`
-	PublishDate   time.Time   `json:"publishDate"`
-	LikeCount     int64       `json:"likeCount"`
+	ID            string
+	Title         string
+	LengthSeconds int64
+	AuthorID      string
+	Description   string
+	Thumbnails    []Thumbnail
+	ViewCount     int64
+	Author        string
+	IsPrivate     bool
+	IsLiveContent bool
+	PublishDate   time.Time
+	LikeCount     int64
 }
 
 type Thumbnail struct {
-	URL    string `json:"url"`
-	Width  int    `json:"width"`
-	Height int    `json:"height"`
+	URL    string `json:"url,required"`
+	Width  int    `json:"width,required"`
+	Height int    `json:"height,required"`
 }
 
 func (raw *rawVideo) toVideo() (*Video, error) {
@@ -66,25 +77,26 @@ func (raw *rawVideo) toVideo() (*Video, error) {
 	return &v, nil
 }
 
+//easyjson:json
 type rawVideo struct {
 	VideoDetails struct {
-		VideoID          string `json:"videoId"`
-		Title            string `json:"title"`
-		LengthSeconds    string `json:"lengthSeconds"`
-		ChannelID        string `json:"channelId"`
-		ShortDescription string `json:"shortDescription"`
+		VideoID          string `json:"videoId,required"`
+		Title            string `json:"title,required"`
+		LengthSeconds    string `json:"lengthSeconds,required"`
+		ChannelID        string `json:"channelId,required"`
+		ShortDescription string `json:"shortDescription,required"`
 		Thumbnail        struct {
-			Thumbnails []Thumbnail `json:"thumbnails"`
-		} `json:"thumbnail"`
-		ViewCount     string `json:"viewCount"`
-		Author        string `json:"author"`
-		IsPrivate     bool   `json:"isPrivate"`
-		IsLiveContent bool   `json:"isLiveContent"`
-	} `json:"videoDetails"`
+			Thumbnails []Thumbnail `json:"thumbnails,required"`
+		} `json:"thumbnail,required"`
+		ViewCount     string `json:"viewCount,required"`
+		Author        string `json:"author,required"`
+		IsPrivate     bool   `json:"isPrivate,required"`
+		IsLiveContent bool   `json:"isLiveContent,required"`
+	} `json:"videoDetails,required"`
 	Microformat struct {
 		PlayerMicroformatRenderer struct {
-			PublishDate time.Time `json:"publishDate"`
-			LikeCount   string    `json:"likeCount"`
-		} `json:"playerMicroformatRenderer"`
-	} `json:"microformat"`
+			PublishDate time.Time `json:"publishDate,required"`
+			LikeCount   string    `json:"likeCount,required"`
+		} `json:"playerMicroformatRenderer,required"`
+	} `json:"microformat,required"`
 }

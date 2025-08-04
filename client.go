@@ -25,11 +25,10 @@ type requestConfig struct {
 	Method string
 	Path   string
 	Params url.Values
-	Input  map[string]string
-	Output any
+	Data   map[string]string
 }
 
-func (c *Client) call(config *requestConfig) error {
+func (c *Client) call(config *requestConfig) ([]byte, error) {
 	if config.Params == nil {
 		config.Params = make(url.Values)
 	}
@@ -38,7 +37,7 @@ func (c *Client) call(config *requestConfig) error {
 	query := config.Params.Encode()
 
 	var body io.Reader
-	if config.Input != nil {
+	if config.Data != nil {
 		payload := internal.Payload{
 			Context: internal.Context{
 				Client: internal.Client{
@@ -48,7 +47,7 @@ func (c *Client) call(config *requestConfig) error {
 					Gl:            "US",
 				},
 			},
-			Data: config.Input,
+			Data: config.Data,
 		}
 		if c.Language != "" {
 			payload.Context.Client.Hl = c.Language
@@ -59,7 +58,7 @@ func (c *Client) call(config *requestConfig) error {
 
 		bodyData, err := json.Marshal(&payload)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		body = bytes.NewReader(bodyData)
 	}
@@ -67,10 +66,10 @@ func (c *Client) call(config *requestConfig) error {
 	url := "https://www.youtube.com/youtubei/v1" + config.Path + "?" + query
 	req, err := http.NewRequest(config.Method, url, body)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	if config.Input != nil {
+	if config.Data != nil {
 		req.Header.Set("Content-Type", "application/json")
 	}
 	if c.UserAgent != "" {
@@ -86,27 +85,23 @@ func (c *Client) call(config *requestConfig) error {
 		resp, err = http.DefaultClient.Do(req)
 	}
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer resp.Body.Close() //nolint:errcheck
 
-	if resp.StatusCode < 200 || resp.StatusCode > 299 {
-		err = newError(resp)
-	} else if config.Output != nil {
-		err = json.UnmarshalRead(resp.Body, config.Output)
-	}
-	return err
-}
-
-func newError(resp *http.Response) Error {
-	body, err := io.ReadAll(resp.Body)
+	respBody, err := io.ReadAll(resp.Body)
 	if err != nil {
-		body = nil
+		respBody = nil
 	}
-	return Error{
-		StatusCode: resp.StatusCode,
-		Message:    bytes2string(body),
+
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		return nil, Error{
+			StatusCode: resp.StatusCode,
+			Message:    bytes2string(respBody),
+		}
 	}
+
+	return respBody, nil
 }
 
 type Error struct {

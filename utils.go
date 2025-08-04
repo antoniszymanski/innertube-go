@@ -11,6 +11,9 @@ import (
 )
 
 func atoi(s string) (int64, error) {
+	if s == "" {
+		return -1, nil
+	}
 	return strconv.ParseInt(s, 10, 64)
 }
 
