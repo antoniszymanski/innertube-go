@@ -14,10 +14,8 @@ import (
 )
 
 type Client struct {
-	Language string // default: en
-	Region   string // default: US
-
-	UserAgent  string
+	Language   string // default: en
+	Region     string // default: US
 	HTTPClient *http.Client
 }
 
@@ -71,11 +69,6 @@ func (c *Client) call(config *requestConfig) ([]byte, error) {
 
 	if config.Data != nil {
 		req.Header.Set("Content-Type", "application/json")
-	}
-	if c.UserAgent != "" {
-		req.Header.Set("User-Agent", c.UserAgent)
-	} else {
-		req.Header.Set("User-Agent", pkgPath+" "+Version())
 	}
 
 	var resp *http.Response
