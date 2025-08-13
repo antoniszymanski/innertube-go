@@ -11,7 +11,7 @@ import (
 
 //go:generate go tool easyjson video.go
 
-func (c *Client) GetVideo(id string) (*Video, error) {
+func (c *Client) Video(id string) (*Video, error) {
 	data, err := c.call(&requestConfig{
 		Method: "POST",
 		Path:   "/player",
