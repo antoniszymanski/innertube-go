@@ -15,7 +15,10 @@ func Call(vm *goja.Runtime, this *goja.Object, name string, args ...goja.Value) 
 	if err != nil {
 		return nil, err
 	}
-	return extractError(vm, val)
+	if err = extractError(vm, val); err != nil {
+		return nil, err
+	}
+	return val, nil
 }
 
 func CallAsync(vm *goja.Runtime, this *goja.Object, name string, args ...goja.Value) (goja.Value, error) {
@@ -29,8 +32,14 @@ func CallAsync(vm *goja.Runtime, this *goja.Object, name string, args ...goja.Va
 	}
 	switch p.State() {
 	case goja.PromiseStateFulfilled:
-		return extractError(vm, p.Result())
+		if err = extractError(vm, p.Result()); err != nil {
+			return nil, err
+		}
+		return p.Result(), nil
 	case goja.PromiseStateRejected:
+		if err = extractError(vm, p.Result()); err != nil {
+			return nil, err
+		}
 		return nil, ErrPromiseRejected{p.Result()}
 	default:
 		return nil, ErrPromisePending{}
@@ -88,13 +97,13 @@ func (e ErrNotFunction) Error() string {
 	return fmt.Sprintf("property %q is not a function", e.PropertyName)
 }
 
-func extractError(vm *goja.Runtime, val goja.Value) (goja.Value, error) {
+func extractError(vm *goja.Runtime, val goja.Value) error {
 	obj, err := ToObject(vm, val)
 	if err != nil {
-		return val, nil
+		return nil
 	}
 	if obj.ClassName() != "Error" {
-		return val, nil
+		return nil
 	}
 
 	var e Error
@@ -111,11 +120,11 @@ func extractError(vm *goja.Runtime, val goja.Value) (goja.Value, error) {
 		e.StackText = stackText.String()
 	}
 	if v := reflect.ValueOf(obj).Elem().FieldByName("self"); v.IsValid() {
-		if v = v.Elem().FieldByName("stack"); v.IsValid() {
+		if v = v.Elem().Elem().FieldByName("stack"); v.IsValid() {
 			e.Stack = *(*[]goja.StackFrame)(v.Addr().UnsafePointer())
 		}
 	}
-	return nil, &e
+	return &e
 }
 
 type Error struct {
@@ -127,7 +136,7 @@ type Error struct {
 }
 
 func (e *Error) Error() string {
-	if e.Cause == "" {
+	if e.Cause == nil {
 		return e.Message
 	} else {
 		return e.Message + ": " + fmt.Sprint(e.Cause)
