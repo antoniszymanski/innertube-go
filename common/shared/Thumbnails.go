@@ -16,6 +16,22 @@ func (x *Thumbnails) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 	return (*utils.Array[Thumbnail])(x).FromObject(vm, obj)
 }
 
+// Returns thumbnail with the lowest resolution, usually the first element of the Thumbnails array
+func (x Thumbnails) Min() *Thumbnail {
+	if len(x) == 0 {
+		return nil
+	}
+	return &x[0]
+}
+
+// Returns thumbnail with the highest resolution, usually the last element of the Thumbnails array
+func (x Thumbnails) Best() *Thumbnail {
+	if len(x) == 0 {
+		return nil
+	}
+	return &x[len(x)-1]
+}
+
 type Thumbnail struct {
 	URL    string `js:"url"`
 	Width  int64  `js:"width"`
