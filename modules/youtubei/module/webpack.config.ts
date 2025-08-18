@@ -8,7 +8,7 @@ const config: webpack.Configuration = {
   mode: "production",
   // mode: "development",
   // devtool: false,
-  entry: "./src/src/index.ts",
+  entry: "./youtubei/src/index.ts",
   output: {
     filename: "index.js",
     path: path.resolve(__dirname, "dist"),
