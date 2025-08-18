@@ -17,13 +17,12 @@ func (x *Array[T]) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 		return ErrNegativeArrayLength{}
 	}
 	for _, name := range IndicesSeq(uint64(length)) {
-		val := obj.Get(name)
+		val = obj.Get(name)
 		if val == nil {
 			return ErrPropertyNotExist{name}
 		}
 		var elem T
-		err := ExportTo(vm, val, &elem)
-		if err != nil {
+		if err := ExportTo(vm, val, &elem); err != nil {
 			return err
 		}
 		*x = append(*x, elem)
