@@ -19,6 +19,7 @@ func StringToBytes(s string) []byte {
 	return unsafe.Slice(unsafe.StringData(s), len(s))
 }
 
+//nolint:all
 //go:nosplit
 func NoEscape[P ~*E, E any](p P) P {
 	x := uintptr(unsafe.Pointer(p))
