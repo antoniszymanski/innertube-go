@@ -1,12 +1,12 @@
 {
-  "go.addTags": {
-    "tags": "json",
-    "options": "json=required",
-    "promptForTags": false,
-    "transform": "camelcase",
-    "template": ""
-  },
-  "gopls": {
-    "ui.diagnostic.staticcheck": false
-  }
+  "conventionalCommits.scopes": [
+    "common",
+    "shared",
+    "utils",
+    "internal",
+    "modules",
+    "modules/fetch",
+    "modules/youtubei",
+    "youtube"
+  ]
 }

@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "@types/node": "^24.2.1",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.1",
+    "esbuild-loader": "^4.3.0",
+    "esbuild-register": "^3.6.0",
+    "events": "^3.3.0",
+    "stream-browserify": "^3.0.0",
+    "terser-webpack-plugin": "^5.3.14",
+    "util": "^0.12.5",
+    "vm-browserify": "^1.1.2",
+    "webpack": "^5.101.1",
+    "webpack-cli": "^6.0.1",
+    "youtubei": "^1.7.0"
+  }
+}

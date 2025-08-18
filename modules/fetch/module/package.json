@@ -1,0 +1,12 @@
+{
+	"devDependencies": {
+		"@types/node": "^24.3.0",
+		"esbuild-loader": "^4.3.0",
+		"esbuild-register": "^3.6.0",
+		"fetch-blob": "^4.0.0",
+		"headers-polyfill": "^4.0.3",
+		"terser-webpack-plugin": "^5.3.14",
+		"webpack": "^5.101.2",
+		"webpack-cli": "^6.0.1"
+	}
+}
