@@ -6,6 +6,7 @@ package youtube
 import (
 	"fmt"
 
+	"github.com/antoniszymanski/innertube-go/common/shared"
 	"github.com/antoniszymanski/innertube-go/common/utils"
 	"github.com/antoniszymanski/innertube-go/internal"
 	"github.com/antoniszymanski/innertube-go/modules/youtubei"
@@ -34,6 +35,15 @@ func NewClient() (Client, error) {
 		return Client{}, err
 	}
 	return Client{vm: vm, this: client}, nil
+}
+
+func (c Client) OAuth() (shared.OAuthProps, error) {
+	val := c.this.Get("oauth")
+	var result shared.OAuthProps
+	if err := utils.ExportTo(c.vm, val, &result); err != nil {
+		return shared.OAuthProps{}, err
+	}
+	return result, nil
 }
 
 func (c Client) GetVideo(id string) (VideoResult, error) {
