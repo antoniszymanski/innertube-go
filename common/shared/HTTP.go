@@ -28,6 +28,7 @@ type ClientOptions struct {
 	BaseURL              string
 	ClientName           string
 	ClientVersion        string
+	Proxy                string
 	YoutubeClientOptions map[string]any
 	InitialCookie        string
 	OAuth                OAuthOptions
@@ -48,6 +49,11 @@ func (x *ClientOptions) ToValue(vm *goja.Runtime) (val goja.Value, err error) {
 	}
 	if x.ClientVersion != "" {
 		try.E(obj.Set("clientVersion", x.ClientVersion))
+	}
+	if x.Proxy != "" {
+		fetchOptions := vm.NewObject()
+		try.E(fetchOptions.Set("proxy", x.Proxy))
+		try.E(obj.Set("fetchOptions", fetchOptions))
 	}
 	if x.YoutubeClientOptions != nil {
 		try.E(obj.Set("youtubeClientOptions", x.YoutubeClientOptions))

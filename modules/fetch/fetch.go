@@ -5,10 +5,10 @@ package fetch
 
 import (
 	"compress/gzip"
-	"context"
 	"errors"
 	"io"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/antoniszymanski/innertube-go/internal"
@@ -19,6 +19,7 @@ type Request struct {
 	Body    string      `js:"body"`
 	Headers http.Header `js:"headers"`
 	Method  string      `js:"method"`
+	Proxy   string      `js:"proxy"`
 }
 
 type response struct {
@@ -29,21 +30,6 @@ type response struct {
 	Status     int                 `js:"status"`
 	StatusText string              `js:"statusText"`
 	URL        string              `js:"url"`
-}
-
-type redirectedKey struct{}
-
-var client = &http.Client{
-	Transport: &http.Transport{
-		DisableCompression: true,
-	},
-	CheckRedirect: func(req *http.Request, via []*http.Request) error {
-		if len(via) >= 10 {
-			return errors.New("stopped after 10 redirects")
-		}
-		*req = *req.WithContext(context.WithValue(req.Context(), redirectedKey{}, true))
-		return nil
-	},
 }
 
 func fetch(r Request) (*response, error) {
@@ -64,8 +50,28 @@ func fetch(r Request) (*response, error) {
 	}
 	req.Header["Accept-Encoding"] = []string{"gzip"}
 
-	*req = *req.WithContext(context.WithValue(req.Context(), redirectedKey{}, false))
-
+	var proxy func(*http.Request) (*url.URL, error)
+	if r.Proxy != "" {
+		proxyURL, err := url.Parse(r.Proxy)
+		if err != nil {
+			return nil, err
+		}
+		proxy = http.ProxyURL(proxyURL)
+	}
+	var redirected bool
+	var client = &http.Client{
+		Transport: &http.Transport{
+			DisableCompression: true,
+			Proxy:              proxy,
+		},
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			if len(via) >= 10 {
+				return errors.New("stopped after 10 redirects")
+			}
+			redirected = true
+			return nil
+		},
+	}
 	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
@@ -94,7 +100,7 @@ func fetch(r Request) (*response, error) {
 		Body:       internal.BytesToString(bodyData),
 		Headers:    resp.Header,
 		OK:         200 <= resp.StatusCode && resp.StatusCode <= 299,
-		Redirected: resp.Request.Context().Value(redirectedKey{}).(bool),
+		Redirected: redirected,
 		Status:     resp.StatusCode,
 		StatusText: http.StatusText(resp.StatusCode),
 		URL:        resp.Request.URL.String(),
