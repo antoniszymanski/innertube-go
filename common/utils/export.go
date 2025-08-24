@@ -13,21 +13,21 @@ type FromObject interface {
 	FromObject(vm *goja.Runtime, obj *goja.Object) error
 }
 
-func ExportTo(vm *goja.Runtime, val goja.Value, target any) error {
-	if val == nil {
+func ExportTo(vm *goja.Runtime, in goja.Value, out any) error {
+	if in == nil {
 		return nil
 	}
-	switch i := target.(type) {
+	switch i := out.(type) {
 	case FromValue:
-		return i.FromValue(vm, val)
+		return i.FromValue(vm, in)
 	case FromObject:
-		obj, err := ToObject(vm, val)
+		obj, err := ToObject(vm, in)
 		if err != nil {
 			return err
 		}
 		return i.FromObject(vm, obj)
 	default:
-		return vm.ExportTo(val, target)
+		return vm.ExportTo(in, out)
 	}
 }
 
