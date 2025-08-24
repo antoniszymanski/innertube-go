@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2025 Antoni Szymański
+// SPDX-License-Identifier: MPL-2.0
+
 package utils
 
 import "github.com/dop251/goja"
