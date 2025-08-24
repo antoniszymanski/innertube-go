@@ -7,31 +7,15 @@ import "github.com/dop251/goja"
 
 type Array[T any] []T
 
-func (x *Array[T]) FromObject(vm *goja.Runtime, obj *goja.Object) error {
-	val := obj.Get("length")
-	if val == nil {
-		return ErrPropertyNotExist{"length"}
-	}
-	length := val.ToInteger()
-	if length < 0 {
-		return ErrNegativeArrayLength{}
-	}
-	for _, name := range IndicesSeq(uint64(length)) {
-		val = obj.Get(name)
-		if val == nil {
-			return ErrPropertyNotExist{name}
-		}
+func (x *Array[T]) FromValue(vm *goja.Runtime, iterable goja.Value) error {
+	var err error
+	vm.ForOf(iterable, func(val goja.Value) bool {
 		var elem T
-		if err := ExportTo(vm, val, &elem); err != nil {
-			return err
+		if err = ExportTo(vm, val, &elem); err != nil {
+			return false
 		}
 		*x = append(*x, elem)
-	}
-	return nil
-}
-
-type ErrNegativeArrayLength struct{}
-
-func (e ErrNegativeArrayLength) Error() string {
-	return "array length must not be negative"
+		return true
+	})
+	return err
 }

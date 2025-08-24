@@ -10,8 +10,8 @@ import (
 
 type Shelves []Shelf
 
-func (x *Shelves) FromObject(vm *goja.Runtime, obj *goja.Object) error {
-	return (*utils.Array[Shelf])(x).FromObject(vm, obj)
+func (x *Shelves) FromValue(vm *goja.Runtime, iterable goja.Value) error {
+	return (*utils.Array[Shelf])(x).FromValue(vm, iterable)
 }
 
 type Shelf struct {

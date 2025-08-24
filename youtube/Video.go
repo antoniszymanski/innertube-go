@@ -39,8 +39,8 @@ func (x *Video) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 
 type Chapters []Chapter
 
-func (x *Chapters) FromObject(vm *goja.Runtime, obj *goja.Object) error {
-	return (*utils.Array[Chapter])(x).FromObject(vm, obj)
+func (x *Chapters) FromValue(vm *goja.Runtime, iterable goja.Value) error {
+	return (*utils.Array[Chapter])(x).FromValue(vm, iterable)
 }
 
 type Chapter struct {

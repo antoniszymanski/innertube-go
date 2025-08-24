@@ -12,8 +12,8 @@ import (
 
 type Thumbnails []Thumbnail
 
-func (x *Thumbnails) FromObject(vm *goja.Runtime, obj *goja.Object) error {
-	return (*utils.Array[Thumbnail])(x).FromObject(vm, obj)
+func (x *Thumbnails) FromValue(vm *goja.Runtime, iterable goja.Value) error {
+	return (*utils.Array[Thumbnail])(x).FromValue(vm, iterable)
 }
 
 // Returns thumbnail with the lowest resolution, usually the first element of the Thumbnails array
