@@ -59,7 +59,7 @@ func fetch(r Request) (*response, error) {
 		proxy = http.ProxyURL(proxyURL)
 	}
 	var redirected bool
-	var client = &http.Client{
+	client := &http.Client{
 		Transport: &http.Transport{
 			DisableCompression: true,
 			Proxy:              proxy,

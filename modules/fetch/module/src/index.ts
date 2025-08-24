@@ -10,6 +10,7 @@ type request = {
   body: string;
   headers: Record<string, string[]>;
   method: string;
+  proxy: string;
 };
 
 type response = {
@@ -26,6 +27,7 @@ type Request = {
   body: string;
   headers: HeadersInit | HeadersObject | HeadersList;
   method: string;
+  proxy?: string;
 };
 
 // oxlint-disable-next-line no-unused-vars
@@ -43,6 +45,7 @@ export async function fetch(url: string, options?: Request) {
     body: options.body,
     method: options.method,
     headers: {},
+    proxy: options.proxy ?? "",
   };
   // @ts-expect-error
   for (const [key, value] of headersToList(new Headers(options.headers))) {
