@@ -32,10 +32,10 @@ func (x *Shelf) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 }
 
 func ShelfGet[T any](s *Shelf, idx int) (T, error) {
-	var target T
-	if err := s.vm.ExportTo(s.items[idx], &target); err != nil {
+	var result T
+	if err := s.vm.ExportTo(s.items[idx], &result); err != nil {
 		var zero T
 		return zero, err
 	}
-	return target, nil
+	return result, nil
 }

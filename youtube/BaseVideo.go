@@ -96,7 +96,7 @@ func (x *VideoCaptions) Get(languageCode string, translationLanguageCode string)
 		args[1] = goja.Undefined()
 	}
 
-	var target []Caption
+	var result []Caption
 	val, err := utils.CallAsync(x.vm, x.this, "get", args...)
 	if err != nil {
 		return nil, err
@@ -105,10 +105,10 @@ func (x *VideoCaptions) Get(languageCode string, translationLanguageCode string)
 		return nil, ErrCaptionsNotFound{}
 	}
 
-	if err := x.vm.ExportTo(val, &target); err != nil {
+	if err := x.vm.ExportTo(val, &result); err != nil {
 		return nil, err
 	}
-	return target, nil
+	return result, nil
 }
 
 type ErrCaptionsNotFound struct{}

@@ -14,11 +14,11 @@ type Continuable[T any] struct {
 }
 
 func (x *Continuable[T]) Items() ([]T, error) {
-	var target utils.Array[T]
-	if err := utils.ExportTo(x.vm, x.this.Get("items"), &target); err != nil {
+	var result utils.Array[T]
+	if err := utils.ExportTo(x.vm, x.this.Get("items"), &result); err != nil {
 		return nil, err
 	}
-	return target, nil
+	return result, nil
 }
 
 func (x *Continuable[T]) Next(count int64) ([]T, error) {
@@ -26,11 +26,11 @@ func (x *Continuable[T]) Next(count int64) ([]T, error) {
 	if err != nil {
 		return nil, err
 	}
-	var target utils.Array[T]
-	if err = utils.ExportTo(x.vm, val, &target); err != nil {
+	var result utils.Array[T]
+	if err = utils.ExportTo(x.vm, val, &result); err != nil {
 		return nil, err
 	}
-	return target, nil
+	return result, nil
 }
 
 func (x *Continuable[T]) FromObject(vm *goja.Runtime, obj *goja.Object) error {
