@@ -18,7 +18,7 @@ type Client struct {
 	this *goja.Object
 }
 
-func NewClient() (Client, error) {
+func NewClient(options *shared.ClientOptions) (Client, error) {
 	vm := internal.NewVM()
 	youtubei.Enable(vm)
 
@@ -30,7 +30,11 @@ func NewClient() (Client, error) {
 		return Client{}, ex
 	}
 
-	client, err := vm.New(construct)
+	arg, err := utils.ImportFrom(vm, options)
+	if err != nil {
+		return Client{}, err
+	}
+	client, err := vm.New(construct, arg)
 	if err != nil {
 		return Client{}, err
 	}
