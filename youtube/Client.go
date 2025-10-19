@@ -56,7 +56,7 @@ func (c Client) GetVideo(id string) (VideoResult, error) {
 		return VideoResult{}, err
 	}
 	if goja.IsUndefined(val) {
-		return VideoResult{}, ErrChannelNotFound{id}
+		return VideoResult{}, ErrVideoNotFound{id}
 	}
 
 	var result VideoResult
