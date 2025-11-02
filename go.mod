@@ -1,6 +1,6 @@
 module github.com/antoniszymanski/innertube-go
 
-go 1.24.5
+go 1.24.9
 
 require (
 	github.com/dop251/goja v0.0.0-20251008123653-cf18d89f3cf6
