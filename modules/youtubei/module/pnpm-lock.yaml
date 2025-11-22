@@ -46,7 +46,7 @@ importers:
         version: 6.0.1(webpack@5.103.0)
       youtubei:
         specifier: ^1.7.0
-        version: 1.7.0
+        version: 1.8.0
 
 packages:
 
@@ -1076,8 +1076,8 @@ packages:
   wildcard@2.0.1:
     resolution: {integrity: sha512-CC1bOL87PIWSBhDcTrdeLo6eGT7mCFtrg0uIJtqJUFyK+eJnzl8A1niH56uu7KMa5XFrtiV+AQuHO3n7DsHnLQ==}
 
-  youtubei@1.7.0:
-    resolution: {integrity: sha512-iL7TQYf6C/Abr3jLHUBhB9jLhdQLlVTGUdo3+NrYvLxpl+SliRd4hV8YpBkOEHOYMaBBmnFnnVMMs/ootjOOmg==}
+  youtubei@1.8.0:
+    resolution: {integrity: sha512-/+qwiyrFQ8+b5N8z4QbGOeP8FR4bsz9lvg631DzwbRp4Wbm4uFbe5h7n08DoP38KoJrNFgNdKhcEmSr9aoCX7g==}
 
 snapshots:
 
@@ -2176,7 +2176,7 @@ snapshots:
 
   wildcard@2.0.1: {}
 
-  youtubei@1.7.0:
+  youtubei@1.8.0:
     dependencies:
       node-fetch: 2.6.7
       protobufjs: 7.2.6
