@@ -19,7 +19,7 @@ importers:
         version: 3.12.1
       esbuild-loader:
         specifier: ^4.3.0
-        version: 4.4.1(webpack@5.104.1)
+        version: 4.4.2(webpack@5.104.1)
       esbuild-register:
         specifier: ^3.6.0
         version: 3.6.0(esbuild@0.27.2)
@@ -548,8 +548,8 @@ packages:
     resolution: {integrity: sha512-FGgH2h8zKNim9ljj7dankFPcICIK9Cp5bm+c2gQSYePhpaG5+esrLODihIorn+Pe6FGJzWhXQotPv73jTaldXA==}
     engines: {node: '>= 0.4'}
 
-  esbuild-loader@4.4.1:
-    resolution: {integrity: sha512-aXMJpkrSKy/x4fvpB0uA7svGOBQFAkWvWdOtKuyWOXtUwruG3Rfr6jqjI/UKf4QDvcHjKQI6pnpKiOejpfE1jg==}
+  esbuild-loader@4.4.2:
+    resolution: {integrity: sha512-8LdoT9sC7fzfvhxhsIAiWhzLJr9yT3ggmckXxsgvM07wgrRxhuT98XhLn3E7VczU5W5AFsPKv9DdWcZIubbWkQ==}
     peerDependencies:
       webpack: ^4.40.0 || ^5.0.0
 
@@ -1562,7 +1562,7 @@ snapshots:
     dependencies:
       es-errors: 1.3.0
 
-  esbuild-loader@4.4.1(webpack@5.104.1):
+  esbuild-loader@4.4.2(webpack@5.104.1):
     dependencies:
       esbuild: 0.27.2
       get-tsconfig: 4.13.0
