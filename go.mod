@@ -3,7 +3,7 @@ module github.com/antoniszymanski/innertube-go
 go 1.24.11
 
 require (
-	github.com/dop251/goja v0.0.0-20251201205617-2bb4c724c0f9
+	github.com/dop251/goja v0.0.0-20260106131823-651366fbe6e3
 	github.com/dop251/goja_nodejs v0.0.0-20251015164255-5e94316bedaf
 	github.com/dsnet/try v0.0.3
 )
