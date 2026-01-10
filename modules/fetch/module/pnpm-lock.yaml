@@ -10,7 +10,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: ^24.3.0
-        version: 24.10.5
+        version: 24.10.6
       esbuild-loader:
         specifier: ^4.3.0
         version: 4.4.2(webpack@5.104.1)
@@ -223,8 +223,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@24.10.5':
-    resolution: {integrity: sha512-tPacJqtEN9wmsHA9YKHxDQlODhoUN3SFQV8kCiWc4oCV1QjbigUNHH8xH3KAyM963jGRCmeDGsBl4ePSgsFivA==}
+  '@types/node@24.10.6':
+    resolution: {integrity: sha512-B8h60xgJMR/xmgyX9fncRzEW9gCxoJjdenUhke2v1JGOd/V66KopmWrLPXi5oUI4VuiGK+d+HlXJjDRZMj21EQ==}
 
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
@@ -854,7 +854,7 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/node@24.10.5':
+  '@types/node@24.10.6':
     dependencies:
       undici-types: 7.16.0
 
@@ -1145,7 +1145,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 24.10.5
+      '@types/node': 24.10.6
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
