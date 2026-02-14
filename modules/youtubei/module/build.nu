@@ -1,14 +1,14 @@
 #!/usr/bin/env nu
 
-cd $env.FILE_PWD
+const root = path self .
+cd $root
 
-rm -rf youtubei
-git clone https://github.com/SuspiciousLookingOwl/youtubei
-cd youtubei
-pnpm i
-cd ..
+rm -rf $"($root)/youtubei"
+git clone https://github.com/SuspiciousLookingOwl/youtubei $"($root)/youtubei"
+pnpm -C $"($root)/youtubei" install
 
+pnpm install
 pnpm webpack
-rm -rf youtubei
+rm -rf $"($root)/youtubei"
 
-ls dist/index.js | get 0.size | to json
+ls $"($root)/dist/index.js" | get 0.size | to json
