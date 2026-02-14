@@ -20,7 +20,9 @@ type BaseVideo struct {
 	// The description of this video
 	Description string `js:"description"`
 	// The channel that uploaded this video
-	Channel BaseChannel `js:"channel"`
+	Channel utils.Option[BaseChannel]
+	// The collaborators of this video
+	Channels utils.Option[utils.Array[BaseChannel]]
 	// The date this video is uploaded at
 	UploadDate string `js:"uploadDate"`
 	// How many views does this video have, None if the view count is hidden
@@ -45,6 +47,9 @@ func (x *BaseVideo) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 		return err
 	}
 	if err := utils.ExportTo(vm, obj.Get("channel"), &x.Channel); err != nil {
+		return err
+	}
+	if err := utils.ExportTo(vm, obj.Get("channels"), &x.Channels); err != nil {
 		return err
 	}
 	if err := utils.ExportTo(vm, obj.Get("viewCount"), &x.ViewCount); err != nil {

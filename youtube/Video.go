@@ -17,6 +17,8 @@ type Video struct {
 	Chapters Chapters
 	// Continuable of videos inside a Video
 	Comments VideoComments
+	// Music metadata (if exists)
+	Music utils.Option[MusicMetadata]
 }
 
 type VideoComments = Continuable[Comment]
@@ -32,6 +34,9 @@ func (x *Video) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 		return err
 	}
 	if err := utils.ExportTo(vm, obj.Get("comments"), &x.Comments); err != nil {
+		return err
+	}
+	if err := utils.ExportTo(vm, obj.Get("music"), &x.Music); err != nil {
 		return err
 	}
 	return nil
@@ -54,6 +59,23 @@ func (x *Chapter) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 		return err
 	}
 	if err := utils.ExportTo(vm, obj.Get("thumbnails"), &x.Thumbnails); err != nil {
+		return err
+	}
+	return nil
+}
+
+type MusicMetadata struct {
+	ImageUrl string `js:"imageUrl"`
+	Title    string `js:"title"`
+	Artist   string `js:"artist"`
+	Album    utils.Option[string]
+}
+
+func (x *MusicMetadata) FromObject(vm *goja.Runtime, obj *goja.Object) error {
+	if err := vm.ExportTo(obj, x); err != nil {
+		return err
+	}
+	if err := utils.ExportTo(vm, obj.Get("album"), &x.Album); err != nil {
 		return err
 	}
 	return nil
