@@ -16,10 +16,7 @@ const ModuleName = "fetch"
 //go:embed module/dist/index.js
 var source string
 
-var program = internal.MustCompile(
-	ModuleName,
-	"(function(exports,require,module,__filename,__dirname,__fetch){"+source+"})",
-)
+var program = internal.MustCompile(ModuleName, source)
 
 func Require(vm *goja.Runtime, module *goja.Object) {
 	fn, err := vm.RunProgram(program)
@@ -30,12 +27,7 @@ func Require(vm *goja.Runtime, module *goja.Object) {
 	if !ok {
 		panic(require.InvalidModuleError)
 	}
-	exports := module.Get("exports")
-	require := vm.Get("require")
-	__filename := vm.ToValue(ModuleName + "/index.js")
-	__dirname := vm.ToValue(ModuleName)
-	__fetch := vm.ToValue(fetch)
-	_, err = call(exports, exports, require, module, __filename, __dirname, __fetch)
+	_, err = call(nil, module, vm.ToValue(fetch))
 	if err != nil {
 		panic(err)
 	}

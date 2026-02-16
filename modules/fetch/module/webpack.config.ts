@@ -1,6 +1,10 @@
+// SPDX-FileCopyrightText: 2026 Antoni Szymański
+// SPDX-License-Identifier: MPL-2.0
+
 import path from "path";
 import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
+import TransformPlugin from "../../transform-plugin";
 
 const target = "es2017";
 
@@ -34,7 +38,19 @@ const config: webpack.Configuration = {
   externals: {
     url: "url",
   },
-  plugins: [new webpack.DefinePlugin({ global: "globalThis" })],
+  plugins: [
+    new webpack.DefinePlugin({ global: "globalThis" }),
+    new TransformPlugin({
+      test: /\.(?:js)$/,
+      transform: (source: string) => {
+        const SUFFIX = ";";
+        if (source[source.length - 1] === SUFFIX) {
+          source = source.substring(0, source.length - SUFFIX.length);
+        }
+        return "((module,__fetch)=>{" + source + "})";
+      },
+    }),
+  ],
   optimization: {
     chunkIds: "total-size",
     moduleIds: "size",
