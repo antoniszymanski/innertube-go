@@ -28,7 +28,7 @@ func CallAsync(vm *goja.Runtime, this *goja.Object, name string, args ...goja.Va
 	}
 	p, ok := val.Export().(*goja.Promise)
 	if !ok {
-		return nil, ErrNotPromise{name, val}
+		return nil, NotPromiseError{name, val}
 	}
 	switch p.State() {
 	case goja.PromiseStateFulfilled:
@@ -40,67 +40,67 @@ func CallAsync(vm *goja.Runtime, this *goja.Object, name string, args ...goja.Va
 		if err = extractError(vm, p.Result()); err != nil {
 			return nil, err
 		}
-		return nil, ErrPromiseRejected{p.Result()}
+		return nil, PromiseRejectedError{p.Result()}
 	default:
-		return nil, ErrPromisePending{}
+		return nil, PromisePendingError{}
 	}
 }
 
-type ErrNotPromise struct {
+type NotPromiseError struct {
 	FunctionName string
 	ActualValue  goja.Value
 }
 
-func (e ErrNotPromise) Error() string {
+func (e NotPromiseError) Error() string {
 	return fmt.Sprintf("function %q didn't return a Promise, got: %s", e.FunctionName, e.ActualValue)
 }
 
-type ErrPromiseRejected struct {
+type PromiseRejectedError struct {
 	PromiseResult goja.Value
 }
 
-func (e ErrPromiseRejected) Error() string {
+func (e PromiseRejectedError) Error() string {
 	return "promise rejected: " + e.PromiseResult.String()
 }
 
-type ErrPromisePending struct{}
+type PromisePendingError struct{}
 
-func (e ErrPromisePending) Error() string {
+func (e PromisePendingError) Error() string {
 	return "unexpected promise state: pending"
 }
 
 func call(this *goja.Object, name string, args ...goja.Value) (goja.Value, error) {
 	val := this.Get(name)
 	if val == nil {
-		return nil, ErrPropertyNotExist{name}
+		return nil, PropertyNotExistError{name}
 	}
 	fn, ok := goja.AssertFunction(val)
 	if !ok {
-		return nil, ErrNotFunction{name}
+		return nil, NotFunctionError{name}
 	}
 	return fn(this, args...)
 }
 
-type ErrPropertyNotExist struct {
+type PropertyNotExistError struct {
 	PropertyName string
 }
 
-func (e ErrPropertyNotExist) Error() string {
+func (e PropertyNotExistError) Error() string {
 	return fmt.Sprintf("property %q does not exist", e.PropertyName)
 }
 
-type ErrNotFunction struct {
+type NotFunctionError struct {
 	PropertyName string
 }
 
-func (e ErrNotFunction) Error() string {
+func (e NotFunctionError) Error() string {
 	return fmt.Sprintf("property %q is not a function", e.PropertyName)
 }
 
 func extractError(vm *goja.Runtime, val goja.Value) error {
 	obj, err := ToObject(vm, val)
 	if err != nil {
-		return nil
+		return nil //nolint:nilerr
 	}
 	if obj.ClassName() != "Error" {
 		return nil

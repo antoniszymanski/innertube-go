@@ -4,6 +4,7 @@
 package youtube
 
 import (
+	"errors"
 	"reflect"
 
 	"github.com/antoniszymanski/innertube-go/common/shared"
@@ -107,7 +108,7 @@ func (x *VideoCaptions) Get(languageCode string, translationLanguageCode string)
 		return nil, err
 	}
 	if goja.IsUndefined(val) {
-		return nil, ErrCaptionsNotFound{}
+		return nil, ErrCaptionsNotFound
 	}
 
 	if err := x.vm.ExportTo(val, &result); err != nil {
@@ -116,8 +117,4 @@ func (x *VideoCaptions) Get(languageCode string, translationLanguageCode string)
 	return result, nil
 }
 
-type ErrCaptionsNotFound struct{}
-
-func (e ErrCaptionsNotFound) Error() string {
-	return "captions not found for the specified language"
-}
+var ErrCaptionsNotFound = errors.New("captions not found for the specified language")

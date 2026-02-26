@@ -4,7 +4,7 @@
 package youtube
 
 import (
-	"fmt"
+	"errors"
 
 	"github.com/antoniszymanski/innertube-go/common/shared"
 	"github.com/antoniszymanski/innertube-go/common/utils"
@@ -55,7 +55,7 @@ func (c Client) GetVideo(id string) (VideoResult, error) {
 		return VideoResult{}, err
 	}
 	if goja.IsUndefined(val) {
-		return VideoResult{}, ErrVideoNotFound{id}
+		return VideoResult{}, ErrVideoNotFound
 	}
 
 	var result VideoResult
@@ -65,13 +65,7 @@ func (c Client) GetVideo(id string) (VideoResult, error) {
 	return result, nil
 }
 
-type ErrVideoNotFound struct {
-	VideoID string
-}
-
-func (e ErrVideoNotFound) Error() string {
-	return fmt.Sprintf("video %q not found", e.VideoID)
-}
+var ErrVideoNotFound = errors.New("video not found")
 
 type VideoResult struct {
 	Video     *Video
@@ -98,7 +92,7 @@ func (c Client) GetChannel(id string) (*Channel, error) {
 		return nil, err
 	}
 	if goja.IsUndefined(val) {
-		return nil, ErrChannelNotFound{id}
+		return nil, ErrChannelNotFound
 	}
 
 	var channel Channel
@@ -108,10 +102,4 @@ func (c Client) GetChannel(id string) (*Channel, error) {
 	return &channel, nil
 }
 
-type ErrChannelNotFound struct {
-	ChannelID string
-}
-
-func (e ErrChannelNotFound) Error() string {
-	return fmt.Sprintf("channel %q not found", e.ChannelID)
-}
+var ErrChannelNotFound = errors.New("channel not found")
