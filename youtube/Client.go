@@ -22,9 +22,8 @@ func NewClient(options *shared.ClientOptions) (Client, error) {
 	vm := internal.NewVM()
 	youtubei.Enable(vm)
 
-	var construct goja.Value
-	ex := vm.Try(func() {
-		construct = vm.Get("youtubei").ToObject(vm).Get("Client")
+	construct, ex := utils.Try(vm, func() goja.Value {
+		return vm.Get("youtubei").ToObject(vm).Get("Client")
 	})
 	if ex != nil {
 		return Client{}, ex

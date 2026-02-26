@@ -32,8 +32,8 @@ func ExportTo(vm *goja.Runtime, in goja.Value, out any) error {
 }
 
 func ToObject(vm *goja.Runtime, val goja.Value) (*goja.Object, error) {
-	var obj *goja.Object
-	if ex := vm.Try(func() { obj = val.ToObject(vm) }); ex != nil {
+	obj, ex := Try(vm, func() *goja.Object { return val.ToObject(vm) })
+	if ex != nil {
 		return nil, ex
 	}
 	return obj, nil

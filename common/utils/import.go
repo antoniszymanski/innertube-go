@@ -29,3 +29,11 @@ func try[T any](f func() T) T {
 	defer func() { _ = recover() }()
 	return f()
 }
+
+func Try[T any](vm *goja.Runtime, f func() T) (T, *goja.Exception) {
+	var x T
+	ex := vm.Try(func() {
+		x = f()
+	})
+	return x, ex
+}
