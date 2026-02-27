@@ -24,7 +24,7 @@ type BaseVideo struct {
 	// The channel that uploaded this video
 	Channel Option[BaseChannel]
 	// The collaborators of this video
-	Channels Option[internal.Array[BaseChannel]]
+	Channels Option[[]BaseChannel]
 	// The date this video is uploaded at
 	UploadDate string `js:"uploadDate"`
 	// How many views does this video have, None if the view count is hidden

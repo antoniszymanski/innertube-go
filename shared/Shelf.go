@@ -3,16 +3,7 @@
 
 package shared
 
-import (
-	"github.com/antoniszymanski/innertube-go/internal"
-	"github.com/dop251/goja"
-)
-
-type Shelves []Shelf
-
-func (x *Shelves) FromValue(vm *goja.Runtime, iterable goja.Value) error {
-	return (*internal.Array[Shelf])(x).FromValue(vm, iterable)
-}
+import "github.com/dop251/goja"
 
 type Shelf struct {
 	vm       *goja.Runtime

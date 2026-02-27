@@ -6,15 +6,10 @@ package shared
 import (
 	"strings"
 
-	"github.com/antoniszymanski/innertube-go/internal"
 	"github.com/dop251/goja"
 )
 
 type Thumbnails []Thumbnail
-
-func (x *Thumbnails) FromValue(vm *goja.Runtime, iterable goja.Value) error {
-	return (*internal.Array[Thumbnail])(x).FromValue(vm, iterable)
-}
 
 // Returns thumbnail with the lowest resolution, usually the first element of the Thumbnails array
 func (x Thumbnails) Min() *Thumbnail {

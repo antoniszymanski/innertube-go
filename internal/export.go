@@ -22,18 +22,25 @@ func ExportTo(vm *goja.Runtime, in goja.Value, out any) error {
 	if in == nil {
 		return nil
 	}
-	if i, ok := out.(FromValue); ok {
+	switch i := out.(type) {
+	case FromValue:
 		return i.FromValue(vm, in)
-	}
-	if i, ok := out.(FromObject); ok {
+	case FromObject:
 		obj, err := ToObject(vm, in)
 		if err != nil {
 			return err
 		}
 		return i.FromObject(vm, obj)
 	}
-	if typ := reflect.TypeOf(out); typ.Kind() == reflect.Pointer && isOption(typ.Elem()) {
-		return exportToOption(vm, in, reflect.ValueOf(out).Elem())
+	if typ := reflect.TypeOf(out); typ.Kind() == reflect.Pointer {
+		typ = typ.Elem()
+		out := func() reflect.Value { return reflect.ValueOf(out).Elem() }
+		switch {
+		case typ.Kind() == reflect.Slice:
+			return exportToSlice(vm, in, out())
+		case isOption(typ):
+			return exportToOption(vm, in, out())
+		}
 	}
 	return vm.ExportTo(in, out)
 }
@@ -44,6 +51,19 @@ func ToObject(vm *goja.Runtime, val goja.Value) (*goja.Object, error) {
 		return nil, ex
 	}
 	return obj, nil
+}
+
+func exportToSlice(vm *goja.Runtime, in goja.Value, out reflect.Value) (err error) {
+	elemType := out.Type().Elem()
+	vm.ForOf(in, func(val goja.Value) bool {
+		elemPtr := reflect.New(elemType)
+		if err = ExportTo(vm, val, elemPtr.Interface()); err != nil {
+			return false
+		}
+		out = reflect.Append(out, elemPtr.Elem())
+		return true
+	})
+	return
 }
 
 func isOption(typ reflect.Type) bool {

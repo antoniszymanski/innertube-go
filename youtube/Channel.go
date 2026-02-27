@@ -16,7 +16,7 @@ type Channel struct {
 	Banner       shared.Thumbnails
 	MobileBanner shared.Thumbnails
 	TvBanner     shared.Thumbnails
-	Shelves      shared.Shelves
+	Shelves      []shared.Shelf
 }
 
 func (x *Channel) FromObject(vm *goja.Runtime, obj *goja.Object) error {

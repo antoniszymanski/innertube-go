@@ -15,7 +15,7 @@ type Video struct {
 	// The duration of this video in second
 	Duration int64 `js:"duration"`
 	// Chapters on this video if exists
-	Chapters Chapters
+	Chapters []Chapter
 	// Continuable of videos inside a Video
 	Comments VideoComments
 	// Music metadata (if exists)
@@ -41,12 +41,6 @@ func (x *Video) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 		return err
 	}
 	return nil
-}
-
-type Chapters []Chapter
-
-func (x *Chapters) FromValue(vm *goja.Runtime, iterable goja.Value) error {
-	return (*internal.Array[Chapter])(x).FromValue(vm, iterable)
 }
 
 type Chapter struct {

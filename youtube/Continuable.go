@@ -14,7 +14,7 @@ type Continuable[T any] struct {
 }
 
 func (x *Continuable[T]) Items() ([]T, error) {
-	var result internal.Array[T]
+	var result []T
 	if err := internal.ExportTo(x.vm, x.this.Get("items"), &result); err != nil {
 		return nil, err
 	}
@@ -26,7 +26,7 @@ func (x *Continuable[T]) Next(count int64) ([]T, error) {
 	if err != nil {
 		return nil, err
 	}
-	var result internal.Array[T]
+	var result []T
 	if err = internal.ExportTo(x.vm, val, &result); err != nil {
 		return nil, err
 	}
