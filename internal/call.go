@@ -15,7 +15,7 @@ func Call(vm *goja.Runtime, this *goja.Object, name string, args ...goja.Value) 
 	if err != nil {
 		return nil, err
 	}
-	if err = extractError(vm, val); err != nil {
+	if err := extractError(vm, val); err != nil {
 		return nil, err
 	}
 	return val, nil
@@ -32,12 +32,12 @@ func CallAsync(vm *goja.Runtime, this *goja.Object, name string, args ...goja.Va
 	}
 	switch p.State() {
 	case goja.PromiseStateFulfilled:
-		if err = extractError(vm, p.Result()); err != nil {
+		if err := extractError(vm, p.Result()); err != nil {
 			return nil, err
 		}
 		return p.Result(), nil
 	case goja.PromiseStateRejected:
-		if err = extractError(vm, p.Result()); err != nil {
+		if err := extractError(vm, p.Result()); err != nil {
 			return nil, err
 		}
 		return nil, PromiseRejectedError{p.Result()}
@@ -97,7 +97,7 @@ func (e NotFunctionError) Error() string {
 	return fmt.Sprintf("property %q is not a function", e.PropertyName)
 }
 
-func extractError(vm *goja.Runtime, val goja.Value) error {
+func extractError(vm *goja.Runtime, val goja.Value) *Error {
 	obj, err := ToObject(vm, val)
 	if err != nil {
 		return nil //nolint:nilerr
