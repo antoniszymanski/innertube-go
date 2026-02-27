@@ -6,10 +6,9 @@ package youtube
 import (
 	"errors"
 
-	"github.com/antoniszymanski/innertube-go/common/shared"
-	"github.com/antoniszymanski/innertube-go/common/utils"
 	"github.com/antoniszymanski/innertube-go/internal"
 	"github.com/antoniszymanski/innertube-go/modules/youtubei"
+	"github.com/antoniszymanski/innertube-go/shared"
 	"github.com/dop251/goja"
 )
 
@@ -22,14 +21,14 @@ func NewClient(options *shared.ClientOptions) (Client, error) {
 	vm := internal.NewVM()
 	youtubei.Enable(vm)
 
-	construct, ex := utils.Try(vm, func() goja.Value {
+	construct, ex := internal.Try(vm, func() goja.Value {
 		return vm.Get("youtubei").ToObject(vm).Get("Client")
 	})
 	if ex != nil {
 		return Client{}, ex
 	}
 
-	arg, err := utils.ImportFrom(vm, options)
+	arg, err := internal.ImportFrom(vm, options)
 	if err != nil {
 		return Client{}, err
 	}
@@ -43,14 +42,14 @@ func NewClient(options *shared.ClientOptions) (Client, error) {
 func (c Client) OAuth() (shared.OAuthProps, error) {
 	val := c.this.Get("oauth")
 	var result shared.OAuthProps
-	if err := utils.ExportTo(c.vm, val, &result); err != nil {
+	if err := internal.ExportTo(c.vm, val, &result); err != nil {
 		return shared.OAuthProps{}, err
 	}
 	return result, nil
 }
 
 func (c Client) GetVideo(id string) (VideoResult, error) {
-	val, err := utils.CallAsync(c.vm, c.this, "getVideo", c.vm.ToValue(id))
+	val, err := internal.CallAsync(c.vm, c.this, "getVideo", c.vm.ToValue(id))
 	if err != nil {
 		return VideoResult{}, err
 	}
@@ -59,7 +58,7 @@ func (c Client) GetVideo(id string) (VideoResult, error) {
 	}
 
 	var result VideoResult
-	if err := utils.ExportTo(c.vm, val, &result); err != nil {
+	if err := internal.ExportTo(c.vm, val, &result); err != nil {
 		return VideoResult{}, err
 	}
 	return result, nil
@@ -77,17 +76,17 @@ func (x *VideoResult) FromValue(vm *goja.Runtime, val goja.Value) error {
 	switch {
 	case vm.InstanceOf(val, module.Get("Video").ToObject(vm)):
 		x.Video = &Video{}
-		return utils.ExportTo(vm, val, x.Video)
+		return internal.ExportTo(vm, val, x.Video)
 	case vm.InstanceOf(val, module.Get("LiveVideo").ToObject(vm)):
 		x.LiveVideo = &LiveVideo{}
-		return utils.ExportTo(vm, val, x.LiveVideo)
+		return internal.ExportTo(vm, val, x.LiveVideo)
 	default:
 		panic("unreachable")
 	}
 }
 
 func (c Client) GetChannel(id string) (*Channel, error) {
-	val, err := utils.CallAsync(c.vm, c.this, "getChannel", c.vm.ToValue(id))
+	val, err := internal.CallAsync(c.vm, c.this, "getChannel", c.vm.ToValue(id))
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +95,7 @@ func (c Client) GetChannel(id string) (*Channel, error) {
 	}
 
 	var channel Channel
-	if err := utils.ExportTo(c.vm, val, &channel); err != nil {
+	if err := internal.ExportTo(c.vm, val, &channel); err != nil {
 		return nil, err
 	}
 	return &channel, nil

@@ -7,8 +7,8 @@ import (
 	"errors"
 	"reflect"
 
-	"github.com/antoniszymanski/innertube-go/common/shared"
-	"github.com/antoniszymanski/innertube-go/common/utils"
+	"github.com/antoniszymanski/innertube-go/internal"
+	"github.com/antoniszymanski/innertube-go/shared"
 	. "github.com/antoniszymanski/option-go"
 	"github.com/dop251/goja"
 )
@@ -24,7 +24,7 @@ type BaseVideo struct {
 	// The channel that uploaded this video
 	Channel Option[BaseChannel]
 	// The collaborators of this video
-	Channels Option[utils.Array[BaseChannel]]
+	Channels Option[internal.Array[BaseChannel]]
 	// The date this video is uploaded at
 	UploadDate string `js:"uploadDate"`
 	// How many views does this video have, None if the view count is hidden
@@ -45,25 +45,25 @@ func (x *BaseVideo) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("thumbnails"), &x.Thumbnails); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("thumbnails"), &x.Thumbnails); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("channel"), &x.Channel); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("channel"), &x.Channel); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("channels"), &x.Channels); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("channels"), &x.Channels); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("viewCount"), &x.ViewCount); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("viewCount"), &x.ViewCount); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("likeCount"), &x.LikeCount); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("likeCount"), &x.LikeCount); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("related"), &x.Related); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("related"), &x.Related); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("captions"), &x.Captions); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("captions"), &x.Captions); err != nil {
 		return err
 	}
 	return nil
@@ -104,7 +104,7 @@ func (x *VideoCaptions) Get(languageCode string, translationLanguageCode string)
 	}
 
 	var result []Caption
-	val, err := utils.CallAsync(x.vm, x.this, "get", args...)
+	val, err := internal.CallAsync(x.vm, x.this, "get", args...)
 	if err != nil {
 		return nil, err
 	}

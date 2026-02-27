@@ -4,7 +4,7 @@
 package youtube
 
 import (
-	"github.com/antoniszymanski/innertube-go/common/utils"
+	"github.com/antoniszymanski/innertube-go/internal"
 	"github.com/dop251/goja"
 )
 
@@ -18,10 +18,10 @@ func (x *VideoRelated) FromValue(vm *goja.Runtime, val goja.Value) error {
 	switch {
 	case vm.InstanceOf(val, module.Get("VideoCompact").ToObject(vm)):
 		x.VideoCompact = &VideoCompact{}
-		return utils.ExportTo(vm, val, x.VideoCompact)
+		return internal.ExportTo(vm, val, x.VideoCompact)
 	case vm.InstanceOf(val, module.Get("PlaylistCompact").ToObject(vm)):
 		x.PlaylistCompact = &PlaylistCompact{}
-		return utils.ExportTo(vm, val, x.PlaylistCompact)
+		return internal.ExportTo(vm, val, x.PlaylistCompact)
 	default:
 		panic("unreachable")
 	}

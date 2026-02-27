@@ -1,12 +1,3 @@
 {
-  "conventionalCommits.scopes": [
-    "common",
-    "shared",
-    "utils",
-    "internal",
-    "modules",
-    "modules/fetch",
-    "modules/youtubei",
-    "youtube"
-  ]
+  "conventionalCommits.scopes": ["shared", "internal", "modules", "modules/fetch", "modules/youtubei", "youtube"]
 }

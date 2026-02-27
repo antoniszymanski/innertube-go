@@ -4,7 +4,7 @@
 package youtube
 
 import (
-	"github.com/antoniszymanski/innertube-go/common/utils"
+	"github.com/antoniszymanski/innertube-go/internal"
 	"github.com/dop251/goja"
 )
 
@@ -38,13 +38,13 @@ func (x *Comment) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("video"), &x.Video); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("video"), &x.Video); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("author"), &x.Author); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("author"), &x.Author); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("replies"), &x.Replies); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("replies"), &x.Replies); err != nil {
 		return err
 	}
 	return nil

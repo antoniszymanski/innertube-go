@@ -4,8 +4,8 @@
 package youtube
 
 import (
-	"github.com/antoniszymanski/innertube-go/common/shared"
-	"github.com/antoniszymanski/innertube-go/common/utils"
+	"github.com/antoniszymanski/innertube-go/internal"
+	"github.com/antoniszymanski/innertube-go/shared"
 	"github.com/dop251/goja"
 )
 
@@ -49,19 +49,19 @@ func (x *BaseChannel) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("videos"), &x.Videos); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("videos"), &x.Videos); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("shorts"), &x.Shorts); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("shorts"), &x.Shorts); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("live"), &x.Live); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("live"), &x.Live); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("playlists"), &x.Playlists); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("playlists"), &x.Playlists); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("posts"), &x.Posts); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("posts"), &x.Posts); err != nil {
 		return err
 	}
 	return nil

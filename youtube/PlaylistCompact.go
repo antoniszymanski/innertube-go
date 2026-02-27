@@ -4,8 +4,8 @@
 package youtube
 
 import (
-	"github.com/antoniszymanski/innertube-go/common/shared"
-	"github.com/antoniszymanski/innertube-go/common/utils"
+	"github.com/antoniszymanski/innertube-go/internal"
+	"github.com/antoniszymanski/innertube-go/shared"
 	"github.com/dop251/goja"
 )
 
@@ -25,10 +25,10 @@ func (x *PlaylistCompact) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("thumbnails"), &x.Thumbnails); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("thumbnails"), &x.Thumbnails); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("channel"), &x.Channel); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("channel"), &x.Channel); err != nil {
 		return err
 	}
 	return nil

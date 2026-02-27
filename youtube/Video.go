@@ -4,8 +4,8 @@
 package youtube
 
 import (
-	"github.com/antoniszymanski/innertube-go/common/shared"
-	"github.com/antoniszymanski/innertube-go/common/utils"
+	"github.com/antoniszymanski/innertube-go/internal"
+	"github.com/antoniszymanski/innertube-go/shared"
 	. "github.com/antoniszymanski/option-go"
 	"github.com/dop251/goja"
 )
@@ -28,16 +28,16 @@ func (x *Video) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj, &x.BaseVideo); err != nil {
+	if err := internal.ExportTo(vm, obj, &x.BaseVideo); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("chapters"), &x.Chapters); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("chapters"), &x.Chapters); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("comments"), &x.Comments); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("comments"), &x.Comments); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("music"), &x.Music); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("music"), &x.Music); err != nil {
 		return err
 	}
 	return nil
@@ -46,7 +46,7 @@ func (x *Video) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 type Chapters []Chapter
 
 func (x *Chapters) FromValue(vm *goja.Runtime, iterable goja.Value) error {
-	return (*utils.Array[Chapter])(x).FromValue(vm, iterable)
+	return (*internal.Array[Chapter])(x).FromValue(vm, iterable)
 }
 
 type Chapter struct {
@@ -59,7 +59,7 @@ func (x *Chapter) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("thumbnails"), &x.Thumbnails); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("thumbnails"), &x.Thumbnails); err != nil {
 		return err
 	}
 	return nil
@@ -76,7 +76,7 @@ func (x *MusicMetadata) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}
-	if err := utils.ExportTo(vm, obj.Get("album"), &x.Album); err != nil {
+	if err := internal.ExportTo(vm, obj.Get("album"), &x.Album); err != nil {
 		return err
 	}
 	return nil
