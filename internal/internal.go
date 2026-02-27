@@ -11,24 +11,6 @@ import (
 	"github.com/dop251/goja_nodejs/require"
 )
 
-func BytesToString(b []byte) string {
-	return unsafe.String(unsafe.SliceData(b), len(b))
-}
-
-var registry = require.NewRegistryWithLoader(
-	func(string) ([]byte, error) {
-		return nil, require.ModuleFileDoesNotExistError
-	},
-)
-
-func NewVM() *goja.Runtime {
-	vm := goja.New()
-	vm.SetFieldNameMapper(goja.TagFieldNameMapper("js", false))
-	vm.SetParserOptions(parser.WithDisableSourceMaps)
-	registry.Enable(vm)
-	return vm
-}
-
 func MustCompile(name, src string) *goja.Program {
 	ast, err := goja.Parse(name, src, parser.WithDisableSourceMaps)
 	if err != nil {
@@ -41,8 +23,20 @@ func MustCompile(name, src string) *goja.Program {
 	return program
 }
 
-func EnsureRequire(vm *goja.Runtime) {
-	if _, ok := goja.AssertFunction(vm.Get("require")); !ok {
-		panic(vm.NewTypeError("Please enable require for this runtime using new(require.Registry).Enable(runtime)"))
-	}
+func NewVM() *goja.Runtime {
+	vm := goja.New()
+	vm.SetFieldNameMapper(goja.TagFieldNameMapper("js", false))
+	vm.SetParserOptions(parser.WithDisableSourceMaps)
+	registry.Enable(vm)
+	return vm
+}
+
+var registry = require.NewRegistryWithLoader(
+	func(string) ([]byte, error) {
+		return nil, require.ModuleFileDoesNotExistError
+	},
+)
+
+func BytesToString(b []byte) string {
+	return unsafe.String(unsafe.SliceData(b), len(b))
 }
