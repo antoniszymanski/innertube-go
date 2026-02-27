@@ -154,7 +154,6 @@ type Error struct {
 func (e *Error) Error() string {
 	if e.Cause == nil {
 		return e.Message
-	} else {
-		return e.Message + ": " + fmt.Sprint(e.Cause)
 	}
+	return fmt.Sprintf("%s: %v", e.Message, e.Cause)
 }
