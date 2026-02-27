@@ -6,6 +6,7 @@ package youtube
 import (
 	"github.com/antoniszymanski/innertube-go/common/shared"
 	"github.com/antoniszymanski/innertube-go/common/utils"
+	. "github.com/antoniszymanski/option-go"
 	"github.com/dop251/goja"
 )
 
@@ -18,7 +19,7 @@ type Video struct {
 	// Continuable of videos inside a Video
 	Comments VideoComments
 	// Music metadata (if exists)
-	Music utils.Option[MusicMetadata]
+	Music Option[MusicMetadata]
 }
 
 type VideoComments = Continuable[Comment]
@@ -68,7 +69,7 @@ type MusicMetadata struct {
 	ImageUrl string `js:"imageUrl"`
 	Title    string `js:"title"`
 	Artist   string `js:"artist"`
-	Album    utils.Option[string]
+	Album    Option[string]
 }
 
 func (x *MusicMetadata) FromObject(vm *goja.Runtime, obj *goja.Object) error {

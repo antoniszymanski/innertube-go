@@ -6,6 +6,7 @@ package youtube
 import (
 	"github.com/antoniszymanski/innertube-go/common/shared"
 	"github.com/antoniszymanski/innertube-go/common/utils"
+	. "github.com/antoniszymanski/option-go"
 	"github.com/dop251/goja"
 )
 
@@ -18,7 +19,7 @@ type VideoCompact struct {
 	// Description of the video (not a full description, rather a preview / snippet)
 	Description string `js:"description"`
 	// The duration of this video in second, None if the video is live
-	Duration utils.Option[int64]
+	Duration Option[int64]
 	// Whether this video is a live now or not
 	IsLive bool `js:"isLive"`
 	// Whether this video is a shorts or not
@@ -28,7 +29,7 @@ type VideoCompact struct {
 	// The date this video is uploaded at
 	UploadDate string `js:"uploadDate"`
 	// How many views does this video have, None if the view count is hidden
-	ViewCount utils.Option[int64]
+	ViewCount Option[int64]
 	// Whether this video is private / deleted or not, only useful in playlist's videos
 	IsPrivateOrDeleted bool `js:"isPrivateOrDeleted"`
 }

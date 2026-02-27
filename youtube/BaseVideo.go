@@ -9,6 +9,7 @@ import (
 
 	"github.com/antoniszymanski/innertube-go/common/shared"
 	"github.com/antoniszymanski/innertube-go/common/utils"
+	. "github.com/antoniszymanski/option-go"
 	"github.com/dop251/goja"
 )
 
@@ -21,15 +22,15 @@ type BaseVideo struct {
 	// The description of this video
 	Description string `js:"description"`
 	// The channel that uploaded this video
-	Channel utils.Option[BaseChannel]
+	Channel Option[BaseChannel]
 	// The collaborators of this video
-	Channels utils.Option[utils.Array[BaseChannel]]
+	Channels Option[utils.Array[BaseChannel]]
 	// The date this video is uploaded at
 	UploadDate string `js:"uploadDate"`
 	// How many views does this video have, None if the view count is hidden
-	ViewCount utils.Option[int64]
+	ViewCount Option[int64]
 	// How many likes does this video have, None if the like count is hidden
-	LikeCount utils.Option[int64]
+	LikeCount Option[int64]
 	// Whether this video is a live content or not
 	IsLiveContent bool `js:"isLiveContent"`
 	// The tags of this video
