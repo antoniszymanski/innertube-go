@@ -105,7 +105,6 @@ func extractError(vm *goja.Runtime, val goja.Value) error {
 	if obj.ClassName() != "Error" {
 		return nil
 	}
-
 	var e Error
 	if name := obj.Get("name"); name != nil {
 		e.Name = name.String()
@@ -119,12 +118,29 @@ func extractError(vm *goja.Runtime, val goja.Value) error {
 	if stackText := obj.Get("stack"); stackText != nil {
 		e.StackText = stackText.String()
 	}
-	if v := reflect.ValueOf(obj).Elem().FieldByName("self"); v.IsValid() {
-		if v = v.Elem().Elem().FieldByName("stack"); v.IsValid() {
-			e.Stack = *(*[]goja.StackFrame)(v.Addr().UnsafePointer())
-		}
-	}
+	e.Stack = extractStack(obj)
 	return &e
+}
+
+func extractStack(obj *goja.Object) []goja.StackFrame {
+	v := reflect.ValueOf(obj).Elem().FieldByName("self")
+	if !v.IsValid() {
+		return nil
+	}
+	if v.Kind() != reflect.Interface {
+		return nil
+	}
+	if v = v.Elem(); v.Kind() != reflect.Pointer {
+		return nil
+	}
+	if v = v.Elem(); v.Kind() != reflect.Struct {
+		return nil
+	}
+	stack, ok := reflect.TypeAssert[*[]goja.StackFrame](field(v, "stack"))
+	if !ok {
+		return nil
+	}
+	return *stack
 }
 
 type Error struct {

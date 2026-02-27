@@ -79,15 +79,15 @@ func exportToOption(vm *goja.Runtime, in goja.Value, out reflect.Value) error {
 		out.Set(reflect.Zero(out.Type()))
 		return nil
 	}
-	if err := vm.ExportTo(in, field(out, 2).Interface()); err != nil {
+	if err := vm.ExportTo(in, field(out, "value").Interface()); err != nil {
 		out.Set(reflect.Zero(out.Type()))
 		return err
 	}
-	field(out, 1).Elem().SetBool(true)
+	field(out, "valid").Elem().SetBool(true)
 	return nil
 }
 
-func field(v reflect.Value, i int) reflect.Value {
-	f := v.Field(i)
+func field(v reflect.Value, name string) reflect.Value {
+	f := v.FieldByName(name)
 	return reflect.NewAt(f.Type(), f.Addr().UnsafePointer())
 }
