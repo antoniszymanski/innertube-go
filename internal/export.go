@@ -5,8 +5,8 @@ package internal
 
 import (
 	"reflect"
-	"strings"
 
+	. "github.com/antoniszymanski/option-go"
 	"github.com/dop251/goja"
 )
 
@@ -38,7 +38,7 @@ func ExportTo(vm *goja.Runtime, in goja.Value, out any) error {
 		switch {
 		case typ.Kind() == reflect.Slice:
 			return exportToSlice(vm, in, out())
-		case isOption(typ):
+		case IsOption(typ):
 			return exportToOption(vm, in, out())
 		}
 	}
@@ -64,14 +64,6 @@ func exportToSlice(vm *goja.Runtime, in goja.Value, out reflect.Value) (err erro
 		return true
 	})
 	return
-}
-
-func isOption(typ reflect.Type) bool {
-	if typ.PkgPath() != "github.com/antoniszymanski/option-go" {
-		return false
-	}
-	name := typ.Name()
-	return strings.HasPrefix(name, "Option[") && strings.HasSuffix(name, "]")
 }
 
 func exportToOption(vm *goja.Runtime, in goja.Value, out reflect.Value) error {
