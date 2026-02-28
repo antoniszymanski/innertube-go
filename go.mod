@@ -3,7 +3,7 @@ module github.com/antoniszymanski/innertube-go
 go 1.26
 
 require (
-	github.com/antoniszymanski/option-go v0.3.0
+	github.com/antoniszymanski/option-go v0.4.0
 	github.com/dop251/goja v0.0.0-20260226184354-913bd86fb70c
 	github.com/dop251/goja_nodejs v0.0.0-20260212111938-1f56ff5bcf14
 	github.com/dsnet/try v0.0.3
