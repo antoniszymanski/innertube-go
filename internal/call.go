@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
-func Call(vm *goja.Runtime, this *goja.Object, name string, args ...goja.Value) (goja.Value, error) {
+func Call(vm *sobek.Runtime, this *sobek.Object, name string, args ...sobek.Value) (sobek.Value, error) {
 	val, err := call(this, name)
 	if err != nil {
 		return nil, err
@@ -21,22 +21,22 @@ func Call(vm *goja.Runtime, this *goja.Object, name string, args ...goja.Value) 
 	return val, nil
 }
 
-func CallAsync(vm *goja.Runtime, this *goja.Object, name string, args ...goja.Value) (goja.Value, error) {
+func CallAsync(vm *sobek.Runtime, this *sobek.Object, name string, args ...sobek.Value) (sobek.Value, error) {
 	val, err := call(this, name, args...)
 	if err != nil {
 		return nil, err
 	}
-	p, ok := val.Export().(*goja.Promise)
+	p, ok := val.Export().(*sobek.Promise)
 	if !ok {
 		return nil, NotPromiseError{name, val}
 	}
 	switch p.State() {
-	case goja.PromiseStateFulfilled:
+	case sobek.PromiseStateFulfilled:
 		if err := extractError(vm, p.Result()); err != nil {
 			return nil, err
 		}
 		return p.Result(), nil
-	case goja.PromiseStateRejected:
+	case sobek.PromiseStateRejected:
 		if err := extractError(vm, p.Result()); err != nil {
 			return nil, err
 		}
@@ -48,7 +48,7 @@ func CallAsync(vm *goja.Runtime, this *goja.Object, name string, args ...goja.Va
 
 type NotPromiseError struct {
 	FunctionName string
-	ActualValue  goja.Value
+	ActualValue  sobek.Value
 }
 
 func (e NotPromiseError) Error() string {
@@ -56,7 +56,7 @@ func (e NotPromiseError) Error() string {
 }
 
 type PromiseRejectedError struct {
-	PromiseResult goja.Value
+	PromiseResult sobek.Value
 }
 
 func (e PromiseRejectedError) Error() string {
@@ -69,12 +69,12 @@ func (e PromisePendingError) Error() string {
 	return "unexpected promise state: pending"
 }
 
-func call(this *goja.Object, name string, args ...goja.Value) (goja.Value, error) {
+func call(this *sobek.Object, name string, args ...sobek.Value) (sobek.Value, error) {
 	val := this.Get(name)
 	if val == nil {
 		return nil, PropertyNotExistError{name}
 	}
-	fn, ok := goja.AssertFunction(val)
+	fn, ok := sobek.AssertFunction(val)
 	if !ok {
 		return nil, NotFunctionError{name}
 	}
@@ -97,7 +97,7 @@ func (e NotFunctionError) Error() string {
 	return fmt.Sprintf("property %q is not a function", e.PropertyName)
 }
 
-func extractError(vm *goja.Runtime, val goja.Value) *Error {
+func extractError(vm *sobek.Runtime, val sobek.Value) *Error {
 	obj, err := ToObject(vm, val)
 	if err != nil {
 		return nil //nolint:nilerr
@@ -122,7 +122,7 @@ func extractError(vm *goja.Runtime, val goja.Value) *Error {
 	return &e
 }
 
-func extractStack(obj *goja.Object) []goja.StackFrame {
+func extractStack(obj *sobek.Object) []sobek.StackFrame {
 	v := reflect.ValueOf(obj).Elem().FieldByName("self")
 	if !v.IsValid() {
 		return nil
@@ -136,7 +136,7 @@ func extractStack(obj *goja.Object) []goja.StackFrame {
 	if v = v.Elem(); v.Kind() != reflect.Struct {
 		return nil
 	}
-	stack, ok := reflect.TypeAssert[*[]goja.StackFrame](field(v, "stack"))
+	stack, ok := reflect.TypeAssert[*[]sobek.StackFrame](field(v, "stack"))
 	if !ok {
 		return nil
 	}
@@ -147,7 +147,7 @@ type Error struct {
 	Name      string
 	Message   string
 	Cause     any
-	Stack     []goja.StackFrame
+	Stack     []sobek.StackFrame
 	StackText string
 }
 

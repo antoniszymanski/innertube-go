@@ -9,19 +9,19 @@ import (
 	"github.com/antoniszymanski/innertube-go/internal"
 	"github.com/antoniszymanski/innertube-go/modules/youtubei"
 	"github.com/antoniszymanski/innertube-go/shared"
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
 type Client struct {
-	vm   *goja.Runtime
-	this *goja.Object
+	vm   *sobek.Runtime
+	this *sobek.Object
 }
 
 func NewClient(options *shared.ClientOptions) (Client, error) {
 	vm := internal.NewVM()
 	youtubei.Enable(vm)
 
-	construct, ex := internal.Try(vm, func() goja.Value {
+	construct, ex := internal.Try(vm, func() sobek.Value {
 		return vm.Get("youtubei").ToObject(vm).Get("Client")
 	})
 	if ex != nil {
@@ -53,7 +53,7 @@ func (c Client) GetVideo(id string) (VideoResult, error) {
 	if err != nil {
 		return VideoResult{}, err
 	}
-	if goja.IsUndefined(val) {
+	if sobek.IsUndefined(val) {
 		return VideoResult{}, ErrVideoNotFound
 	}
 
@@ -71,7 +71,7 @@ type VideoResult struct {
 	LiveVideo *LiveVideo
 }
 
-func (x *VideoResult) FromValue(vm *goja.Runtime, val goja.Value) error {
+func (x *VideoResult) FromValue(vm *sobek.Runtime, val sobek.Value) error {
 	module := vm.Get("youtubei").ToObject(vm)
 	switch {
 	case vm.InstanceOf(val, module.Get("Video").ToObject(vm)):
@@ -90,7 +90,7 @@ func (c Client) GetChannel(id string) (*Channel, error) {
 	if err != nil {
 		return nil, err
 	}
-	if goja.IsUndefined(val) {
+	if sobek.IsUndefined(val) {
 		return nil, ErrChannelNotFound
 	}
 

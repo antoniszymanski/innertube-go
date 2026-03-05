@@ -7,18 +7,18 @@ import (
 	"reflect"
 
 	. "github.com/antoniszymanski/option-go"
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
 type FromValue interface {
-	FromValue(vm *goja.Runtime, val goja.Value) error
+	FromValue(vm *sobek.Runtime, val sobek.Value) error
 }
 
 type FromObject interface {
-	FromObject(vm *goja.Runtime, obj *goja.Object) error
+	FromObject(vm *sobek.Runtime, obj *sobek.Object) error
 }
 
-func ExportTo(vm *goja.Runtime, in goja.Value, out any) error {
+func ExportTo(vm *sobek.Runtime, in sobek.Value, out any) error {
 	if in == nil {
 		return nil
 	}
@@ -45,17 +45,17 @@ func ExportTo(vm *goja.Runtime, in goja.Value, out any) error {
 	return vm.ExportTo(in, out)
 }
 
-func ToObject(vm *goja.Runtime, val goja.Value) (*goja.Object, error) {
-	obj, ex := Try(vm, func() *goja.Object { return val.ToObject(vm) })
+func ToObject(vm *sobek.Runtime, val sobek.Value) (*sobek.Object, error) {
+	obj, ex := Try(vm, func() *sobek.Object { return val.ToObject(vm) })
 	if ex != nil {
 		return nil, ex
 	}
 	return obj, nil
 }
 
-func exportToSlice(vm *goja.Runtime, in goja.Value, out reflect.Value) (err error) {
+func exportToSlice(vm *sobek.Runtime, in sobek.Value, out reflect.Value) (err error) {
 	elemType := out.Type().Elem()
-	vm.ForOf(in, func(val goja.Value) bool {
+	vm.ForOf(in, func(val sobek.Value) bool {
 		elemPtr := reflect.New(elemType)
 		if err = ExportTo(vm, val, elemPtr.Interface()); err != nil {
 			return false
@@ -66,8 +66,8 @@ func exportToSlice(vm *goja.Runtime, in goja.Value, out reflect.Value) (err erro
 	return
 }
 
-func exportToOption(vm *goja.Runtime, in goja.Value, out reflect.Value) error {
-	if goja.IsNull(in) || goja.IsUndefined(in) {
+func exportToOption(vm *sobek.Runtime, in sobek.Value, out reflect.Value) error {
+	if sobek.IsNull(in) || sobek.IsUndefined(in) {
 		out.Set(reflect.Zero(out.Type()))
 		return nil
 	}

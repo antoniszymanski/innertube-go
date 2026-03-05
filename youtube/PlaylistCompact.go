@@ -6,7 +6,7 @@ package youtube
 import (
 	"github.com/antoniszymanski/innertube-go/internal"
 	"github.com/antoniszymanski/innertube-go/shared"
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
 type PlaylistCompact struct {
@@ -21,7 +21,7 @@ type PlaylistCompact struct {
 	VideoCount int64 `js:"videoCount"`
 }
 
-func (x *PlaylistCompact) FromObject(vm *goja.Runtime, obj *goja.Object) error {
+func (x *PlaylistCompact) FromObject(vm *sobek.Runtime, obj *sobek.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}

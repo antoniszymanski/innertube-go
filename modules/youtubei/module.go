@@ -8,11 +8,11 @@ import (
 
 	"github.com/antoniszymanski/innertube-go/internal"
 	_ "github.com/antoniszymanski/innertube-go/modules/fetch"
-	"github.com/dop251/goja"
-	_ "github.com/dop251/goja_nodejs/console"
-	"github.com/dop251/goja_nodejs/process"
-	"github.com/dop251/goja_nodejs/require"
-	_ "github.com/dop251/goja_nodejs/url"
+	"github.com/grafana/sobek"
+	_ "github.com/ohayocorp/sobek_nodejs/console"
+	"github.com/ohayocorp/sobek_nodejs/process"
+	"github.com/ohayocorp/sobek_nodejs/require"
+	_ "github.com/ohayocorp/sobek_nodejs/url"
 )
 
 const ModuleName = "youtubei"
@@ -22,13 +22,13 @@ var source string
 
 var program = internal.MustCompile(ModuleName, source)
 
-func Require(vm *goja.Runtime, module *goja.Object) {
+func Require(vm *sobek.Runtime, module *sobek.Object) {
 	process.Enable(vm)
 	fn, err := vm.RunProgram(program)
 	if err != nil {
 		panic(err)
 	}
-	call, ok := goja.AssertFunction(fn)
+	call, ok := sobek.AssertFunction(fn)
 	if !ok {
 		panic(require.InvalidModuleError)
 	}
@@ -38,7 +38,7 @@ func Require(vm *goja.Runtime, module *goja.Object) {
 	}
 }
 
-func Enable(vm *goja.Runtime) {
+func Enable(vm *sobek.Runtime) {
 	m := require.Require(vm, ModuleName).ToObject(vm)
 	vm.Set(ModuleName, m) //nolint:errcheck
 }

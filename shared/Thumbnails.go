@@ -6,7 +6,7 @@ package shared
 import (
 	"strings"
 
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
 type Thumbnails []Thumbnail
@@ -33,7 +33,7 @@ type Thumbnail struct {
 	Height int64  `js:"height"`
 }
 
-func (x *Thumbnail) FromValue(vm *goja.Runtime, val goja.Value) error {
+func (x *Thumbnail) FromValue(vm *sobek.Runtime, val sobek.Value) error {
 	if err := vm.ExportTo(val, x); err != nil {
 		return err
 	}

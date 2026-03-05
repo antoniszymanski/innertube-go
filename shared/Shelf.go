@@ -3,16 +3,16 @@
 
 package shared
 
-import "github.com/dop251/goja"
+import "github.com/grafana/sobek"
 
 type Shelf struct {
-	vm       *goja.Runtime
+	vm       *sobek.Runtime
 	Title    string `js:"title"`
-	items    []*goja.Object
+	items    []*sobek.Object
 	Subtitle string `js:"subtitle"`
 }
 
-func (x *Shelf) FromObject(vm *goja.Runtime, obj *goja.Object) error {
+func (x *Shelf) FromObject(vm *sobek.Runtime, obj *sobek.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}

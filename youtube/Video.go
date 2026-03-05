@@ -7,7 +7,7 @@ import (
 	"github.com/antoniszymanski/innertube-go/internal"
 	"github.com/antoniszymanski/innertube-go/shared"
 	. "github.com/antoniszymanski/option-go"
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
 type Video struct {
@@ -24,7 +24,7 @@ type Video struct {
 
 type VideoComments = Continuable[Comment]
 
-func (x *Video) FromObject(vm *goja.Runtime, obj *goja.Object) error {
+func (x *Video) FromObject(vm *sobek.Runtime, obj *sobek.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}
@@ -49,7 +49,7 @@ type Chapter struct {
 	Thumbnails shared.Thumbnails
 }
 
-func (x *Chapter) FromObject(vm *goja.Runtime, obj *goja.Object) error {
+func (x *Chapter) FromObject(vm *sobek.Runtime, obj *sobek.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}
@@ -66,7 +66,7 @@ type MusicMetadata struct {
 	Album    Option[string]
 }
 
-func (x *MusicMetadata) FromObject(vm *goja.Runtime, obj *goja.Object) error {
+func (x *MusicMetadata) FromObject(vm *sobek.Runtime, obj *sobek.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}

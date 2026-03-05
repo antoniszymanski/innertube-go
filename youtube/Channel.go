@@ -6,7 +6,7 @@ package youtube
 import (
 	"github.com/antoniszymanski/innertube-go/internal"
 	"github.com/antoniszymanski/innertube-go/shared"
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
 type Channel struct {
@@ -19,7 +19,7 @@ type Channel struct {
 	Shelves      []shared.Shelf
 }
 
-func (x *Channel) FromObject(vm *goja.Runtime, obj *goja.Object) error {
+func (x *Channel) FromObject(vm *sobek.Runtime, obj *sobek.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}

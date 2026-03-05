@@ -5,7 +5,7 @@ package youtube
 
 import (
 	"github.com/antoniszymanski/innertube-go/internal"
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
 type VideoRelated struct {
@@ -13,7 +13,7 @@ type VideoRelated struct {
 	PlaylistCompact *PlaylistCompact
 }
 
-func (x *VideoRelated) FromValue(vm *goja.Runtime, val goja.Value) error {
+func (x *VideoRelated) FromValue(vm *sobek.Runtime, val sobek.Value) error {
 	module := vm.Get("youtubei").ToObject(vm)
 	switch {
 	case vm.InstanceOf(val, module.Get("VideoCompact").ToObject(vm)):

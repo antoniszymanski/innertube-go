@@ -10,7 +10,7 @@ import (
 	"github.com/antoniszymanski/innertube-go/internal"
 	"github.com/antoniszymanski/innertube-go/shared"
 	. "github.com/antoniszymanski/option-go"
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
 type BaseVideo struct {
@@ -41,7 +41,7 @@ type BaseVideo struct {
 	Captions VideoCaptions
 }
 
-func (x *BaseVideo) FromObject(vm *goja.Runtime, obj *goja.Object) error {
+func (x *BaseVideo) FromObject(vm *sobek.Runtime, obj *sobek.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}
@@ -70,8 +70,8 @@ func (x *BaseVideo) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 }
 
 type VideoCaptions struct {
-	vm   *goja.Runtime
-	this *goja.Object
+	vm   *sobek.Runtime
+	this *sobek.Object
 	// List of available languages for this video
 	Languages []CaptionLanguage `js:"languages"`
 }
@@ -83,7 +83,7 @@ func (x *VideoCaptions) IsZero() bool {
 	return reflect.ValueOf(x).Elem().IsZero()
 }
 
-func (x *VideoCaptions) FromObject(vm *goja.Runtime, obj *goja.Object) error {
+func (x *VideoCaptions) FromObject(vm *sobek.Runtime, obj *sobek.Object) error {
 	x.vm = vm
 	x.this = obj
 	return vm.ExportTo(obj, x)
@@ -91,16 +91,16 @@ func (x *VideoCaptions) FromObject(vm *goja.Runtime, obj *goja.Object) error {
 
 // Get captions of a specific language or a translation of a specific language
 func (x *VideoCaptions) Get(languageCode string, translationLanguageCode string) ([]Caption, error) {
-	args := make([]goja.Value, 2)
+	args := make([]sobek.Value, 2)
 	if languageCode != "" {
 		args[0] = x.vm.ToValue(languageCode)
 	} else {
-		args[0] = goja.Undefined()
+		args[0] = sobek.Undefined()
 	}
 	if translationLanguageCode != "" {
 		args[1] = x.vm.ToValue(translationLanguageCode)
 	} else {
-		args[1] = goja.Undefined()
+		args[1] = sobek.Undefined()
 	}
 
 	var result []Caption
@@ -108,7 +108,7 @@ func (x *VideoCaptions) Get(languageCode string, translationLanguageCode string)
 	if err != nil {
 		return nil, err
 	}
-	if goja.IsUndefined(val) {
+	if sobek.IsUndefined(val) {
 		return nil, ErrCaptionsNotFound
 	}
 

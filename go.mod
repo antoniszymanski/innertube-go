@@ -4,9 +4,9 @@ go 1.26
 
 require (
 	github.com/antoniszymanski/option-go v0.4.0
-	github.com/dop251/goja v0.0.0-20260305124333-6a7976c22267
-	github.com/dop251/goja_nodejs v0.0.0-20260212111938-1f56ff5bcf14
 	github.com/dsnet/try v0.0.3
+	github.com/grafana/sobek v0.0.0-20250320150027-203dc85b6d98
+	github.com/ohayocorp/sobek_nodejs v0.0.0-20250921061224-8763c0e155c9
 )
 
 require (

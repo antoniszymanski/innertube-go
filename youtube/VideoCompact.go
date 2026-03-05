@@ -7,7 +7,7 @@ import (
 	"github.com/antoniszymanski/innertube-go/internal"
 	"github.com/antoniszymanski/innertube-go/shared"
 	. "github.com/antoniszymanski/option-go"
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
 type VideoCompact struct {
@@ -34,7 +34,7 @@ type VideoCompact struct {
 	IsPrivateOrDeleted bool `js:"isPrivateOrDeleted"`
 }
 
-func (x *VideoCompact) FromObject(vm *goja.Runtime, obj *goja.Object) error {
+func (x *VideoCompact) FromObject(vm *sobek.Runtime, obj *sobek.Object) error {
 	if err := vm.ExportTo(obj, x); err != nil {
 		return err
 	}

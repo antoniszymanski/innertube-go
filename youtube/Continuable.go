@@ -5,12 +5,12 @@ package youtube
 
 import (
 	"github.com/antoniszymanski/innertube-go/internal"
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
 type Continuable[T any] struct {
-	vm   *goja.Runtime
-	this *goja.Object
+	vm   *sobek.Runtime
+	this *sobek.Object
 }
 
 func (x *Continuable[T]) Items() ([]T, error) {
@@ -33,7 +33,7 @@ func (x *Continuable[T]) Next(count int64) ([]T, error) {
 	return result, nil
 }
 
-func (x *Continuable[T]) FromObject(vm *goja.Runtime, obj *goja.Object) error {
+func (x *Continuable[T]) FromObject(vm *sobek.Runtime, obj *sobek.Object) error {
 	x.vm = vm
 	x.this = obj
 	return nil

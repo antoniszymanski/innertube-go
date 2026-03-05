@@ -6,16 +6,16 @@ package internal
 import (
 	"reflect"
 
-	"github.com/dop251/goja"
+	"github.com/grafana/sobek"
 )
 
 type ToValue interface {
-	ToValue(vm *goja.Runtime) (goja.Value, error)
+	ToValue(vm *sobek.Runtime) (sobek.Value, error)
 }
 
-func ImportFrom(vm *goja.Runtime, in any) (goja.Value, error) {
+func ImportFrom(vm *sobek.Runtime, in any) (sobek.Value, error) {
 	if in == nil || try(reflect.ValueOf(in).IsNil) {
-		return goja.Undefined(), nil
+		return sobek.Undefined(), nil
 	}
 	switch i := in.(type) {
 	case ToValue:
@@ -30,7 +30,7 @@ func try[T any](f func() T) T {
 	return f()
 }
 
-func Try[T any](vm *goja.Runtime, f func() T) (T, *goja.Exception) {
+func Try[T any](vm *sobek.Runtime, f func() T) (T, *sobek.Exception) {
 	var x T
 	ex := vm.Try(func() {
 		x = f()

@@ -6,26 +6,26 @@ package internal
 import (
 	"unsafe"
 
-	"github.com/dop251/goja"
-	"github.com/dop251/goja/parser"
-	"github.com/dop251/goja_nodejs/require"
+	"github.com/grafana/sobek"
+	"github.com/grafana/sobek/parser"
+	"github.com/ohayocorp/sobek_nodejs/require"
 )
 
-func MustCompile(name, src string) *goja.Program {
-	ast, err := goja.Parse(name, src, parser.WithDisableSourceMaps)
+func MustCompile(name, src string) *sobek.Program {
+	ast, err := sobek.Parse(name, src, parser.WithDisableSourceMaps)
 	if err != nil {
 		panic(err)
 	}
-	program, err := goja.CompileAST(ast, true)
+	program, err := sobek.CompileAST(ast, true)
 	if err != nil {
 		panic(err)
 	}
 	return program
 }
 
-func NewVM() *goja.Runtime {
-	vm := goja.New()
-	vm.SetFieldNameMapper(goja.TagFieldNameMapper("js", false))
+func NewVM() *sobek.Runtime {
+	vm := sobek.New()
+	vm.SetFieldNameMapper(sobek.TagFieldNameMapper("js", false))
 	vm.SetParserOptions(parser.WithDisableSourceMaps)
 	registry.Enable(vm)
 	return vm

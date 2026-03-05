@@ -6,8 +6,8 @@ package shared
 import (
 	"time"
 
-	"github.com/dop251/goja"
 	"github.com/dsnet/try"
+	"github.com/grafana/sobek"
 )
 
 type OAuthOptions struct {
@@ -38,7 +38,7 @@ type ClientOptions struct {
 	Pot                  PotOptions
 }
 
-func (x *ClientOptions) ToValue(vm *goja.Runtime) (val goja.Value, err error) {
+func (x *ClientOptions) ToValue(vm *sobek.Runtime) (val sobek.Value, err error) {
 	defer try.Handle(&err)
 	obj := vm.NewObject()
 	if x.APIKey != "" {

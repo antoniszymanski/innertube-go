@@ -7,8 +7,8 @@ import (
 	_ "embed"
 
 	"github.com/antoniszymanski/innertube-go/internal"
-	"github.com/dop251/goja"
-	"github.com/dop251/goja_nodejs/require"
+	"github.com/grafana/sobek"
+	"github.com/ohayocorp/sobek_nodejs/require"
 )
 
 const ModuleName = "fetch"
@@ -18,12 +18,12 @@ var source string
 
 var program = internal.MustCompile(ModuleName, source)
 
-func Require(vm *goja.Runtime, module *goja.Object) {
+func Require(vm *sobek.Runtime, module *sobek.Object) {
 	fn, err := vm.RunProgram(program)
 	if err != nil {
 		panic(err)
 	}
-	call, ok := goja.AssertFunction(fn)
+	call, ok := sobek.AssertFunction(fn)
 	if !ok {
 		panic(require.InvalidModuleError)
 	}
@@ -33,7 +33,7 @@ func Require(vm *goja.Runtime, module *goja.Object) {
 	}
 }
 
-func Enable(vm *goja.Runtime) {
+func Enable(vm *sobek.Runtime) {
 	m := require.Require(vm, ModuleName).ToObject(vm)
 	for _, key := range m.Keys() {
 		if key != "default" {
