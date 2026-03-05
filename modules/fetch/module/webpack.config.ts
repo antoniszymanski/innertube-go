@@ -6,7 +6,7 @@ import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
 import TransformPlugin from "../../transform-plugin";
 
-const target = "es2017";
+const target = "es2024";
 
 const config: webpack.Configuration = {
   mode: "production",
