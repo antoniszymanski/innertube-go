@@ -40,10 +40,10 @@ importers:
         version: 1.1.2
       webpack:
         specifier: ^5.101.1
-        version: 5.105.4(esbuild@0.27.2)(webpack-cli@7.0.1)
+        version: 5.105.4(esbuild@0.27.2)(webpack-cli@7.0.2)
       webpack-cli:
         specifier: ^7.0.0
-        version: 7.0.1(webpack@5.105.4)
+        version: 7.0.2(webpack@5.105.4)
       youtubei:
         specifier: ^1.7.0
         version: 1.8.5
@@ -992,8 +992,8 @@ packages:
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
 
-  webpack-cli@7.0.1:
-    resolution: {integrity: sha512-QeNvbQ3q67tiY7UqjbsfhK2026YTVhtW8XsfdrrGfGUtBe6EQpxBB1w9SbB2eLTZzx4m8tRvm8dqKo8rBNfeFg==}
+  webpack-cli@7.0.2:
+    resolution: {integrity: sha512-dB0R4T+C/8YuvM+fabdvil6QE44/ChDXikV5lOOkrUeCkW5hTJv2pGLE3keh+D5hjYw8icBaJkZzpFoaHV4T+g==}
     engines: {node: '>=20.9.0'}
     hasBin: true
     peerDependencies:
@@ -1520,7 +1520,7 @@ snapshots:
       esbuild: 0.27.2
       get-tsconfig: 4.13.0
       loader-utils: 2.0.4
-      webpack: 5.105.4(esbuild@0.27.2)(webpack-cli@7.0.1)
+      webpack: 5.105.4(esbuild@0.27.2)(webpack-cli@7.0.2)
       webpack-sources: 1.4.3
 
   esbuild-register@3.6.0(esbuild@0.27.2):
@@ -1976,7 +1976,7 @@ snapshots:
       jest-worker: 27.5.1
       schema-utils: 4.3.3
       terser: 5.46.0
-      webpack: 5.105.4(esbuild@0.27.2)(webpack-cli@7.0.1)
+      webpack: 5.105.4(esbuild@0.27.2)(webpack-cli@7.0.2)
     optionalDependencies:
       esbuild: 0.27.2
 
@@ -2028,7 +2028,7 @@ snapshots:
 
   webidl-conversions@3.0.1: {}
 
-  webpack-cli@7.0.1(webpack@5.105.4):
+  webpack-cli@7.0.2(webpack@5.105.4):
     dependencies:
       '@discoveryjs/json-ext': 1.0.0
       commander: 14.0.3
@@ -2038,7 +2038,7 @@ snapshots:
       import-local: 3.2.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.105.4(esbuild@0.27.2)(webpack-cli@7.0.1)
+      webpack: 5.105.4(esbuild@0.27.2)(webpack-cli@7.0.2)
       webpack-merge: 6.0.1
 
   webpack-merge@6.0.1:
@@ -2054,7 +2054,7 @@ snapshots:
 
   webpack-sources@3.3.4: {}
 
-  webpack@5.105.4(esbuild@0.27.2)(webpack-cli@7.0.1):
+  webpack@5.105.4(esbuild@0.27.2)(webpack-cli@7.0.2):
     dependencies:
       '@types/eslint-scope': 3.7.7
       '@types/estree': 1.0.8
@@ -2082,7 +2082,7 @@ snapshots:
       watchpack: 2.5.1
       webpack-sources: 3.3.4
     optionalDependencies:
-      webpack-cli: 7.0.1(webpack@5.105.4)
+      webpack-cli: 7.0.2(webpack@5.105.4)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
