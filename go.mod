@@ -5,7 +5,7 @@ go 1.26
 require (
 	github.com/antoniszymanski/option-go v0.4.0
 	github.com/dsnet/try v0.0.3
-	github.com/grafana/sobek v0.0.0-20260309140132-c198b3f43d96
+	github.com/grafana/sobek v0.0.0-20260331145705-2272ac4993ef
 	github.com/ohayocorp/sobek_nodejs v0.0.0-20250921061224-8763c0e155c9
 )
 
